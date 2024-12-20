@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: |
           chmod +x ./gradlew
-          ./gradlew :composeApp:wasmJsBrowserDistribution
+          ./gradlew wasmJsBrowserDistribution
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
