@@ -62,12 +62,12 @@ fun FoodSurveyApp() {
                      )*/
 
                 FoodItem(
-                    modifier = Modifier.weight(1f, false),
+                    modifier = Modifier,
                     food = foodList[currentFoodIndex],
                 )
 
                 Column(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().weight(1f, false)
                 ) {
                     ResponseOptions(
                         options = responseOptions,
