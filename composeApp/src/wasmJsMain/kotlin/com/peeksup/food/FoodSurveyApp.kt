@@ -1,5 +1,6 @@
 package com.peeksup.food
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -88,43 +89,57 @@ fun FoodSurveyApp() {
                 }
             }
         } else {
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
             ) {
-                Text(
-                    text = LanguageManager.getString(StringKey.RESULT),
-                    style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
-                    modifier = Modifier
-                        .padding(bottom = 8.dp)
-                        .align(Alignment.CenterHorizontally)
-                )
-                ResultsDisplay(
-                    results = responses,
-                    modifier = Modifier.weight(1f, false)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                CopyLinkButton(responses = responses)
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(
-                    onClick = {
-                        umami.track("retry")
-                        responses = emptyMap()
-                        currentFoodIndex = 0
-                        showResults = false
-                        window.history.replaceState(null, "", window.location.pathname)
-                    },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp)
-                        .padding(horizontal = 16.dp),
-                    shape = RoundedCornerShape(8.dp)
+                        .padding(bottom = 140.dp)  // 하단 버튼을 위한 여유 공간
                 ) {
-                    Text(text = LanguageManager.getString(StringKey.RESTART), color = Color.White)
+                    Text(
+                        text = LanguageManager.getString(StringKey.RESULT),
+                        style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+                        modifier = Modifier
+                            .padding(bottom = 8.dp)
+                            .align(Alignment.CenterHorizontally)
+                    )
+                    ResultsDisplay(
+                        results = responses,
+                        modifier = Modifier
+                    )
                 }
-                Spacer(modifier = Modifier.height(32.dp))
+
+                // 하단 고정 버튼
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .background(Color.White)
+                        .padding(bottom = 16.dp)
+                ) {
+                    CopyLinkButton(responses = responses)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(
+                        onClick = {
+                            umami.track("retry")
+                            responses = emptyMap()
+                            currentFoodIndex = 0
+                            showResults = false
+                            window.history.replaceState(null, "", window.location.pathname)
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp)
+                            .padding(horizontal = 16.dp),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(text = LanguageManager.getString(StringKey.RESTART), color = Color.White)
+                    }
+                }
             }
         }
     }
