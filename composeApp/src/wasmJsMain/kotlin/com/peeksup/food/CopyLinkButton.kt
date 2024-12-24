@@ -1,0 +1,46 @@
+package com.peeksup.food
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.peeksup.util.URLUtils
+import kotlinx.browser.window
+import kotlin.js.Promise
+
+@Composable
+fun CopyLinkButton(responses: Map<String, String>) {
+    var showCopySuccess by remember { mutableStateOf(false) }
+
+    Button(
+        onClick = {
+            val shareUrl = URLUtils.encodeResponsesToURL(responses)
+            window.navigator.clipboard.writeText(shareUrl).then { _ ->
+                showCopySuccess = true
+                Promise.resolve(null)
+            }
+        },
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF4CAF50)),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Text(
+            text = if (showCopySuccess) "링크가 복사되었습니다!" else "결과 링크 복사하기",
+            color = Color.White
+        )
+    }
+}
