@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
@@ -87,7 +89,9 @@ fun FoodSurveyApp() {
             }
         } else {
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             ) {
                 Text(
                     text = LanguageManager.getString(StringKey.RESULT),
@@ -96,35 +100,31 @@ fun FoodSurveyApp() {
                         .padding(bottom = 8.dp)
                         .align(Alignment.CenterHorizontally)
                 )
-                ResultsDisplay(results = responses, modifier = Modifier)
-                Column(modifier = Modifier) {
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    CopyLinkButton(responses = responses)
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Button(
-                        onClick = {
-                            umami.track("retry")
-                            responses = emptyMap()
-                            currentFoodIndex = 0
-                            showResults = false
-                            window.history.replaceState(null, "", window.location.pathname)
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(48.dp)
-                            .padding(horizontal = 16.dp),
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        Text(
-                            text = LanguageManager.getString(StringKey.RESTART),
-                            color = Color.White
-                        )
-                    }
+                ResultsDisplay(
+                    results = responses,
+                    modifier = Modifier.weight(1f, false)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                CopyLinkButton(responses = responses)
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = {
+                        umami.track("retry")
+                        responses = emptyMap()
+                        currentFoodIndex = 0
+                        showResults = false
+                        window.history.replaceState(null, "", window.location.pathname)
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .padding(horizontal = 16.dp),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(text = LanguageManager.getString(StringKey.RESTART), color = Color.White)
                 }
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
     }

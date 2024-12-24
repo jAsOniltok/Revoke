@@ -20,20 +20,16 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ResultsDisplay(modifier: Modifier, results: Map<String, String>) {
-    // 응답별로 음식 그룹화
     val groupedResults = results.entries.groupBy { it.value }
     umami.track("results", groupedResults.toString())
 
-    // Scrollable Column으로 전체 내용을 스크롤 가능하게 함
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .background(Color(0xFFF0F0F0), shape = RoundedCornerShape(12.dp))
             .padding(16.dp)
-            .verticalScroll(rememberScrollState()) // 스크롤 추가
     ) {
         groupedResults.forEach { (response, foods) ->
-            // 응답 카테고리 헤더
             Text(
                 text = response,
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
@@ -42,7 +38,6 @@ fun ResultsDisplay(modifier: Modifier, results: Map<String, String>) {
                     .fillMaxWidth()
             )
 
-            // 음식 리스트 표시
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
