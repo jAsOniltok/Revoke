@@ -1,24 +1,32 @@
 package com.peeksup.food
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.peeksup.util.URLUtils
+import com.peeksup.util.umami
 import kotlinx.browser.window
-import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
@@ -47,14 +55,6 @@ fun FoodSurveyApp() {
 
                 FoodItem(
                     food = foodList[currentFoodIndex],
-                    onOptionSelected = { selectedOption ->
-                        responses = responses + (foodList[currentFoodIndex].name to selectedOption)
-                        if (currentFoodIndex < foodList.size - 1) {
-                            currentFoodIndex += 1
-                        } else {
-                            showResults = true
-                        }
-                    }
                 )
 
                 Column(
@@ -63,7 +63,9 @@ fun FoodSurveyApp() {
                     ResponseOptions(
                         options = responseOptions,
                         onOptionSelected = { selectedOption ->
-                            responses = responses + (foodList[currentFoodIndex].name to selectedOption)
+                            umami.track("${foodList[currentFoodIndex].name to selectedOption}")
+                            responses =
+                                responses + (foodList[currentFoodIndex].name to selectedOption)
                             if (currentFoodIndex < foodList.size - 1) {
                                 currentFoodIndex += 1
                             } else {
@@ -93,6 +95,7 @@ fun FoodSurveyApp() {
 
                 Button(
                     onClick = {
+                        umami.track("retry")
                         responses = emptyMap()
                         currentFoodIndex = 0
                         showResults = false
@@ -106,7 +109,8 @@ fun FoodSurveyApp() {
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(text = "다시 시작", color = Color.White)
-                }            }
+                }
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.peeksup.util.URLUtils
+import com.peeksup.util.umami
 import kotlinx.browser.window
 import kotlin.js.Promise
 
@@ -25,6 +26,7 @@ fun CopyLinkButton(responses: Map<String, String>) {
 
     Button(
         onClick = {
+            umami.track("copy")
             val shareUrl = URLUtils.encodeResponsesToURL(responses)
             window.navigator.clipboard.writeText(shareUrl).then { _ ->
                 showCopySuccess = true
