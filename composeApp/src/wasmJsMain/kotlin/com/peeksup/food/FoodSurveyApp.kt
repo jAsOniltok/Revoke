@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
@@ -45,48 +47,47 @@ fun FoodSurveyApp() {
     var responses by rememberSaveable { mutableStateOf(urlResponses ?: emptyMap()) }
     var showResults by rememberSaveable { mutableStateOf(urlResponses != null) }
 
-    Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp)
+    ) {
         if (!showResults) {
             Column(
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 80.dp)
+                modifier = Modifier.fillMaxSize()
             ) {
-           /*     Text(
+                Text(
                     text = LanguageManager.getString(StringKey.TITLE),
                     style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .align(Alignment.CenterHorizontally)
-                )*/
+                )
 
                 FoodItem(
                     modifier = Modifier.weight(1f, false),
                     food = foodList[currentFoodIndex],
                 )
 
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    ResponseOptions(
-                        options = responseOptions,
-                        onOptionSelected = { selectedOption ->
-                            val foodName = LanguageManager.getString(foodList[currentFoodIndex].stringKey)
-                            umami.track("${foodName to selectedOption}")
-                            responses = responses + (foodName to selectedOption)
-                            if (currentFoodIndex < foodList.size - 1) {
-                                currentFoodIndex += 1
-                            } else {
-                                showResults = true
-                            }
+                ResponseOptions(
+                    options = responseOptions,
+                    onOptionSelected = { selectedOption ->
+                        val foodName = LanguageManager.getString(foodList[currentFoodIndex].stringKey)
+                        umami.track("${foodName to selectedOption}")
+                        responses = responses + (foodName to selectedOption)
+                        if (currentFoodIndex < foodList.size - 1) {
+                            currentFoodIndex += 1
+                        } else {
+                            showResults = true
                         }
-                    )
-                }
+                    }
+                )
             }
         } else {
             Column(
-                modifier = Modifier.fillMaxSize().padding(bottom = 80.dp)
+                modifier = Modifier.fillMaxSize()
             ) {
                 Text(
                     text = LanguageManager.getString(StringKey.RESULT),
@@ -95,7 +96,9 @@ fun FoodSurveyApp() {
                         .padding(bottom = 8.dp)
                         .align(Alignment.CenterHorizontally)
                 )
+
                 ResultsDisplay(results = responses)
+
                 Spacer(modifier = Modifier.height(16.dp))
 
                 CopyLinkButton(responses = responses)
@@ -119,6 +122,8 @@ fun FoodSurveyApp() {
                 ) {
                     Text(text = LanguageManager.getString(StringKey.RESTART), color = Color.White)
                 }
+
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
     }
