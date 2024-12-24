@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.peeksup.util.LanguageManager
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -27,22 +28,22 @@ fun FoodItem(food: Food) {
     ) {
         Image(
             painter = painterResource(food.imageRes),
-            contentDescription = food.name,
+            contentDescription = LanguageManager.getString(food.stringKey),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp) // 이미지 크기 증가
+                .height(300.dp)
                 .clip(RoundedCornerShape(12.dp))
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = food.name,
+            text = LanguageManager.getString(food.stringKey),
             style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 12.dp)
-                .align(Alignment.CenterHorizontally), // 중앙 정렬,
+                .align(Alignment.CenterHorizontally),
             textAlign = TextAlign.Center
         )
     }

@@ -15,6 +15,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.peeksup.util.LanguageManager
+import com.peeksup.util.StringKey
 import com.peeksup.util.URLUtils
 import com.peeksup.util.umami
 import kotlinx.browser.window
@@ -41,7 +43,7 @@ fun CopyLinkButton(responses: Map<String, String>) {
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
-            text = if (showCopySuccess) "링크가 복사되었습니다!" else "결과 링크 복사하기",
+            text = if (showCopySuccess) LanguageManager.getString(StringKey.COPIED) else LanguageManager.getString(StringKey.COPY_LINK),
             color = Color.White
         )
     }

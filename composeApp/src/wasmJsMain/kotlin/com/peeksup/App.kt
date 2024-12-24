@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.text.font.FontFamily
 import com.peeksup.food.FoodSurveyApp
 import com.peeksup.util.umami
+import kotlinx.browser.window
 import org.jetbrains.compose.resources.Font
 import revoke.composeapp.generated.resources.Pretendard_SemiBold
 import revoke.composeapp.generated.resources.Res

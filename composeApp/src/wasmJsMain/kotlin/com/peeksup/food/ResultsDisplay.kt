@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.peeksup.util.LanguageManager
 import com.peeksup.util.umami
 import org.jetbrains.compose.resources.painterResource
 
@@ -56,8 +57,8 @@ fun ResultsDisplay(results: Map<String, String>) {
 
 @Composable
 fun FoodResultItem(foodName: String) {
-    // 해당 음식의 이미지 리소스 찾기
-    val food = foodList.find { it.name == foodName }
+    // stringKey로 Food 찾기
+    val food = foodList.find { LanguageManager.getString(it.stringKey) == foodName }
 
     if (food != null) {
         Row(
@@ -67,20 +68,18 @@ fun FoodResultItem(foodName: String) {
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // 음식 이미지
             Image(
                 painter = painterResource(food.imageRes),
-                contentDescription = food.name,
+                contentDescription = LanguageManager.getString(food.stringKey),
                 modifier = Modifier
-                    .size(80.dp) // 이미지 크기 확대
+                    .size(80.dp)
                     .clip(RoundedCornerShape(8.dp))
             )
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // 음식 이름
             Text(
-                text = food.name,
+                text = LanguageManager.getString(food.stringKey),
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Medium),
                 modifier = Modifier.weight(1f)
             )

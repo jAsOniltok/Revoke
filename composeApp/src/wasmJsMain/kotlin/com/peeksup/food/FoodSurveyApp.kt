@@ -24,6 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.peeksup.util.LanguageManager
+import com.peeksup.util.ResponseKey
+import com.peeksup.util.StringKey
 import com.peeksup.util.URLUtils
 import com.peeksup.util.umami
 import kotlinx.browser.window
@@ -32,6 +35,11 @@ import kotlinx.browser.window
 @Composable
 fun FoodSurveyApp() {
     val urlResponses = remember { URLUtils.decodeURLToResponses("") }
+    val responseOptions = remember {
+        ResponseKey.entries.map { key ->
+            LanguageManager.getResponseString(key)
+        }
+    }
 
     var currentFoodIndex by rememberSaveable { mutableStateOf(0) }
     var responses by rememberSaveable { mutableStateOf(urlResponses ?: emptyMap()) }
@@ -46,7 +54,7 @@ fun FoodSurveyApp() {
                     .padding(bottom = 80.dp)
             ) {
                 Text(
-                    text = "이거 어때?",
+                    text = LanguageManager.getString(StringKey.TITLE),
                     style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .padding(bottom = 16.dp)
@@ -63,9 +71,9 @@ fun FoodSurveyApp() {
                     ResponseOptions(
                         options = responseOptions,
                         onOptionSelected = { selectedOption ->
-                            umami.track("${foodList[currentFoodIndex].name to selectedOption}")
-                            responses =
-                                responses + (foodList[currentFoodIndex].name to selectedOption)
+                            val foodName = LanguageManager.getString(foodList[currentFoodIndex].stringKey)
+                            umami.track("${foodName to selectedOption}")
+                            responses = responses + (foodName to selectedOption)
                             if (currentFoodIndex < foodList.size - 1) {
                                 currentFoodIndex += 1
                             } else {
@@ -80,7 +88,7 @@ fun FoodSurveyApp() {
                 modifier = Modifier.fillMaxSize().padding(bottom = 80.dp)
             ) {
                 Text(
-                    text = "응답 결과",
+                    text = LanguageManager.getString(StringKey.RESULT),
                     style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .padding(bottom = 8.dp)
@@ -108,7 +116,7 @@ fun FoodSurveyApp() {
                         .padding(horizontal = 16.dp),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text(text = "다시 시작", color = Color.White)
+                    Text(text = LanguageManager.getString(StringKey.RESTART), color = Color.White)
                 }
             }
         }
