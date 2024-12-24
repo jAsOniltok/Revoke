@@ -53,15 +53,16 @@ fun FoodSurveyApp() {
                     .fillMaxSize()
                     .padding(bottom = 80.dp)
             ) {
-                Text(
+           /*     Text(
                     text = LanguageManager.getString(StringKey.TITLE),
                     style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .align(Alignment.CenterHorizontally)
-                )
+                )*/
 
                 FoodItem(
+                    modifier = Modifier.weight(1f, false),
                     food = foodList[currentFoodIndex],
                 )
 
