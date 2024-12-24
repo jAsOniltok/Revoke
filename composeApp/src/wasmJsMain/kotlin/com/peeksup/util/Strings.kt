@@ -34,7 +34,7 @@ enum class ResponseKey {
 object Strings {
     private val translations = mapOf(
         Language.KOREAN.code to mapOf(
-            StringKey.TITLE to "이거 어때?",
+            StringKey.TITLE to "얼마나 좋아하세요?",
             StringKey.RESULT to "응답 결과",
             StringKey.RESTART to "다시 시작",
             StringKey.COPY_LINK to "결과 링크 복사하기",
@@ -53,7 +53,7 @@ object Strings {
             )
         ),
         Language.ENGLISH.code to mapOf(
-            StringKey.TITLE to "How about this?",
+            StringKey.TITLE to "How much do you like it?",
             StringKey.RESULT to "Survey Results",
             StringKey.RESTART to "Start Over",
             StringKey.COPY_LINK to "Copy Result Link",
@@ -72,7 +72,7 @@ object Strings {
             )
         ),
         Language.CHINESE.code to mapOf(
-            StringKey.TITLE to "你觉得怎么样？",
+            StringKey.TITLE to "你有多喜欢？",
             StringKey.RESULT to "调查结果",
             StringKey.RESTART to "重新开始",
             StringKey.COPY_LINK to "复制结果链接",
@@ -91,7 +91,7 @@ object Strings {
             )
         ),
         Language.JAPANESE.code to mapOf(
-            StringKey.TITLE to "これはどう？",
+            StringKey.TITLE to "どのくらい好きですか？",
             StringKey.RESULT to "回答結果",
             StringKey.RESTART to "もう一度",
             StringKey.COPY_LINK to "結果リンクをコピー",
@@ -110,7 +110,7 @@ object Strings {
             )
         ),
         Language.TURKISH.code to mapOf(
-            StringKey.TITLE to "Buna ne dersin?",
+            StringKey.TITLE to "Ne kadar seviyorsun?",
             StringKey.RESULT to "Anket Sonuçları",
             StringKey.RESTART to "Yeniden Başla",
             StringKey.COPY_LINK to "Sonuç Bağlantısını Kopyala",
@@ -129,7 +129,7 @@ object Strings {
             )
         ),
         Language.INDONESIAN.code to mapOf(
-            StringKey.TITLE to "Bagaimana dengan ini?",
+            StringKey.TITLE to "Seberapa suka?",
             StringKey.RESULT to "Hasil Survei",
             StringKey.RESTART to "Mulai Ulang",
             StringKey.COPY_LINK to "Salin Tautan Hasil",
