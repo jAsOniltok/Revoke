@@ -62,12 +62,12 @@ fun FoodSurveyApp() {
                      )*/
 
                 FoodItem(
-                    modifier = Modifier,
+                    modifier = Modifier.weight(1f, false),
                     food = foodList[currentFoodIndex],
                 )
 
                 Column(
-                    modifier = Modifier.fillMaxWidth().weight(1f, false)
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     ResponseOptions(
                         options = responseOptions,
@@ -96,7 +96,7 @@ fun FoodSurveyApp() {
                         .padding(bottom = 8.dp)
                         .align(Alignment.CenterHorizontally)
                 )
-                ResultsDisplay(results = responses, modifier = Modifier.weight(1f, false))
+                ResultsDisplay(results = responses, modifier = Modifier)
                 Column(modifier = Modifier) {
                     Spacer(modifier = Modifier.height(16.dp))
 
