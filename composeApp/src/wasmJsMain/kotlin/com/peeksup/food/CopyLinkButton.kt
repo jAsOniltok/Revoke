@@ -61,6 +61,7 @@ fun CopyLinkButton(responses: Map<String, String>) {
                     showCopySuccess = success
                 } catch (e: Exception) {
                     println("execCommand 실패: $e")
+                    umami.track("웹뷰 복사 실패 $e")
                 }
             }
         },
