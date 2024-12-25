@@ -20,7 +20,13 @@ enum class StringKey {
     FOOD_BIBIMBAP,
     FOOD_BULGOGI,
     FOOD_PORK_BELLY,
-    FOOD_SOYBEAN_STEW
+    FOOD_SOYBEAN_STEW,
+
+    BROWSER_WARNING_TITLE,
+    BROWSER_SUPPORTED_TITLE,
+    BROWSER_SUPPORTED_LIST,
+    BROWSER_LEGACY_TITLE,
+    BROWSER_LEGACY_LIST
 }
 
 enum class ResponseKey {
@@ -50,7 +56,24 @@ object Strings {
                 ResponseKey.NEUTRAL to "보통이야",
                 ResponseKey.LIKE to "좋아해",
                 ResponseKey.LOVE to "엄청 좋아해"
-            )
+            ),
+            StringKey.BROWSER_WARNING_TITLE to "최신 브라우저가 필요합니다",
+            StringKey.BROWSER_SUPPORTED_TITLE to "지원되는 브라우저:",
+            StringKey.BROWSER_SUPPORTED_LIST to "• Chrome 119+ (자동 지원)\n" +
+                    "• 크로미움 기반 브라우저 119+ (자동 지원):\n" +
+                    "  - Microsoft Edge\n" +
+                    "  - Brave\n" +
+                    "  - Whale(네이버)\n" +
+                    "  - Opera\n" +
+                    "  - Vivaldi\n" +
+                    "  - Samsung Internet\n" +
+                    "  - Arc\n" +
+                    "• Firefox 120+ (자동 지원)\n" +
+                    "• Safari/WebKit 18.2+ (자동 지원)",
+            StringKey.BROWSER_LEGACY_TITLE to "이전 버전에서 사용하기:",
+            StringKey.BROWSER_LEGACY_LIST to "• Chrome: chrome://flags에서 'WebAssembly GC' 활성화\n" +
+                    "• Firefox 119: about:config에서 'javascript.options.wasm_gc' 활성화\n" +
+                    "• Safari 18.2 미만: 지원되지 않음"
         ),
         Language.ENGLISH.code to mapOf(
             StringKey.TITLE to "How much do you like it?",
@@ -69,7 +92,24 @@ object Strings {
                 ResponseKey.NEUTRAL to "It's okay",
                 ResponseKey.LIKE to "Like it",
                 ResponseKey.LOVE to "Love it"
-            )
+            ),
+            StringKey.BROWSER_WARNING_TITLE to "Modern Browser Required",
+            StringKey.BROWSER_SUPPORTED_TITLE to "Supported Browsers:",
+            StringKey.BROWSER_SUPPORTED_LIST to "• Chrome 119+ (automatically supported)\n" +
+                    "• Chromium-based browsers 119+ (automatically supported):\n" +
+                    "  - Microsoft Edge\n" +
+                    "  - Brave\n" +
+                    "  - Whale (Naver)\n" +
+                    "  - Opera\n" +
+                    "  - Vivaldi\n" +
+                    "  - Samsung Internet\n" +
+                    "  - Arc\n" +
+                    "• Firefox 120+ (automatically supported)\n" +
+                    "• Safari/WebKit 18.2+ (automatically supported)",
+            StringKey.BROWSER_LEGACY_TITLE to "For older versions:",
+            StringKey.BROWSER_LEGACY_LIST to "• Chrome: Enable 'WebAssembly GC' in chrome://flags\n" +
+                    "• Firefox 119: Enable 'javascript.options.wasm_gc' in about:config\n" +
+                    "• Safari below 18.2: Not supported"
         ),
         Language.CHINESE.code to mapOf(
             StringKey.TITLE to "你有多喜欢？",
@@ -88,7 +128,24 @@ object Strings {
                 ResponseKey.NEUTRAL to "一般",
                 ResponseKey.LIKE to "喜欢",
                 ResponseKey.LOVE to "非常喜欢"
-            )
+            ),
+            StringKey.BROWSER_WARNING_TITLE to "需要现代浏览器",
+            StringKey.BROWSER_SUPPORTED_TITLE to "支持的浏览器：",
+            StringKey.BROWSER_SUPPORTED_LIST to "• Chrome 119+（自动支持）\n" +
+                    "• Chromium基本浏览器 119+（自动支持）：\n" +
+                    "  - Microsoft Edge\n" +
+                    "  - Brave\n" +
+                    "  - Whale（Naver）\n" +
+                    "  - Opera\n" +
+                    "  - Vivaldi\n" +
+                    "  - Samsung Internet\n" +
+                    "  - Arc\n" +
+                    "• Firefox 120+（自动支持）\n" +
+                    "• Safari/WebKit 18.2+（自动支持）",
+            StringKey.BROWSER_LEGACY_TITLE to "较旧版本设置：",
+            StringKey.BROWSER_LEGACY_LIST to "• Chrome：在chrome://flags中启用'WebAssembly GC'\n" +
+                    "• Firefox 119：在about:config中启用'javascript.options.wasm_gc'\n" +
+                    "• Safari 18.2以下：不支持"
         ),
         Language.JAPANESE.code to mapOf(
             StringKey.TITLE to "どのくらい好きですか？",
@@ -107,7 +164,24 @@ object Strings {
                 ResponseKey.NEUTRAL to "普通",
                 ResponseKey.LIKE to "好き",
                 ResponseKey.LOVE to "大好き"
-            )
+            ),
+            StringKey.BROWSER_WARNING_TITLE to "最新のブラウザが必要です",
+            StringKey.BROWSER_SUPPORTED_TITLE to "対応ブラウザ：",
+            StringKey.BROWSER_SUPPORTED_LIST to "• Chrome 119+（自動対応）\n" +
+                    "• Chromiumベースのブラウザ 119+（自動対応）：\n" +
+                    "  - Microsoft Edge\n" +
+                    "  - Brave\n" +
+                    "  - Whale（Naver）\n" +
+                    "  - Opera\n" +
+                    "  - Vivaldi\n" +
+                    "  - Samsung Internet\n" +
+                    "  - Arc\n" +
+                    "• Firefox 120+（自動対応）\n" +
+                    "• Safari/WebKit 18.2+（自動対応）",
+            StringKey.BROWSER_LEGACY_TITLE to "古いバージョンの設定：",
+            StringKey.BROWSER_LEGACY_LIST to "• Chrome：chrome://flagsで'WebAssembly GC'を有効化\n" +
+                    "• Firefox 119：about:configで'javascript.options.wasm_gc'を有効化\n" +
+                    "• Safari 18.2未満：非対応"
         ),
         Language.TURKISH.code to mapOf(
             StringKey.TITLE to "Ne kadar seviyorsun?",
@@ -126,7 +200,24 @@ object Strings {
                 ResponseKey.NEUTRAL to "Fena değil",
                 ResponseKey.LIKE to "Seviyorum",
                 ResponseKey.LOVE to "Çok seviyorum"
-            )
+            ),
+            StringKey.BROWSER_WARNING_TITLE to "Modern Tarayıcı Gerekli",
+            StringKey.BROWSER_SUPPORTED_TITLE to "Desteklenen Tarayıcılar:",
+            StringKey.BROWSER_SUPPORTED_LIST to "• Chrome 119+ (otomatik desteklenir)\n" +
+                    "• Chromium tabanlı tarayıcılar 119+ (otomatik desteklenir):\n" +
+                    "  - Microsoft Edge\n" +
+                    "  - Brave\n" +
+                    "  - Whale (Naver)\n" +
+                    "  - Opera\n" +
+                    "  - Vivaldi\n" +
+                    "  - Samsung Internet\n" +
+                    "  - Arc\n" +
+                    "• Firefox 120+ (otomatik desteklenir)\n" +
+                    "• Safari/WebKit 18.2+ (otomatik desteklenir)",
+            StringKey.BROWSER_LEGACY_TITLE to "Eski sürümler için:",
+            StringKey.BROWSER_LEGACY_LIST to "• Chrome: chrome://flags'de 'WebAssembly GC'yi etkinleştirin\n" +
+                    "• Firefox 119: about:config'de 'javascript.options.wasm_gc'yi etkinleştirin\n" +
+                    "• Safari 18.2 altı: Desteklenmiyor"
         ),
         Language.INDONESIAN.code to mapOf(
             StringKey.TITLE to "Seberapa suka?",
@@ -145,7 +236,24 @@ object Strings {
                 ResponseKey.NEUTRAL to "Biasa saja",
                 ResponseKey.LIKE to "Suka",
                 ResponseKey.LOVE to "Sangat suka"
-            )
+            ),
+            StringKey.BROWSER_WARNING_TITLE to "Browser Modern Diperlukan",
+            StringKey.BROWSER_SUPPORTED_TITLE to "Browser yang Didukung:",
+            StringKey.BROWSER_SUPPORTED_LIST to "• Chrome 119+ (didukung secara otomatis)\n" +
+                    "• Browser berbasis Chromium 119+ (didukung otomatis):\n" +
+                    "  - Microsoft Edge\n" +
+                    "  - Brave\n" +
+                    "  - Whale (Naver)\n" +
+                    "  - Opera\n" +
+                    "  - Vivaldi\n" +
+                    "  - Samsung Internet\n" +
+                    "  - Arc\n" +
+                    "• Firefox 120+ (didukung otomatis)\n" +
+                    "• Safari/WebKit 18.2+ (didukung otomatis)",
+            StringKey.BROWSER_LEGACY_TITLE to "Untuk versi lama:",
+            StringKey.BROWSER_LEGACY_LIST to "• Chrome: Aktifkan 'WebAssembly GC' di chrome://flags\n" +
+                    "• Firefox 119: Aktifkan 'javascript.options- Firefox 119: Aktifkan 'javascript.options.wasm_gc' di about:config\n" +
+                    "• Safari di bawah 18.2: Tidak didukung"
         )
     )
 
