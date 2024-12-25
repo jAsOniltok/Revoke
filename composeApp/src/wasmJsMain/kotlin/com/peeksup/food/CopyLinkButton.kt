@@ -59,9 +59,11 @@ fun CopyLinkButton(responses: Map<String, String>) {
                     document.body?.removeChild(textArea)
 
                     showCopySuccess = success
+                    umami.track("웹뷰 복사 실패 success?: $success")
+
                 } catch (e: Exception) {
                     println("execCommand 실패: $e")
-                    umami.track("웹뷰 복사 실패 $e")
+                    umami.track("웹뷰 복사 실패 catch $e")
                 }
             }
         },
