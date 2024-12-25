@@ -34,26 +34,33 @@ fun CopyLinkButton(responses: Map<String, String>) {
             val shareUrl = URLUtils.encodeResponsesToURL(responses)
 
             try {
-                // Modern API 시도
+                // Clipboard API 시도
                 window.navigator.clipboard.writeText(shareUrl).then { _ ->
                     showCopySuccess = true
                     Promise.resolve(null)
                 }
             } catch (e: Exception) {
-                println("클립보드 접근 실패 $e")
-                val shareUrl2 = URLUtils.encodeResponsesToURL(responses)
-
-                val textArea = document.createElement("textarea") as HTMLTextAreaElement
-                textArea.value = shareUrl2
-                document.body?.appendChild(textArea)
-                textArea.select()
+                println("Clipboard API 실패: $e")
 
                 try {
-                    showCopySuccess = document.execCommand("copy")
-                } catch (e: Exception) {
-                    println(e)
-                } finally {
+                    // 가장 기본적인 방식으로 시도
+                    val textArea = document.createElement("textarea") as HTMLTextAreaElement
+                    textArea.value = shareUrl
+
+                    // 화면 밖으로 이동
+                    textArea.style.position = "absolute"
+                    textArea.style.left = "-9999px"
+
+                    document.body?.appendChild(textArea)
+                    textArea.focus()
+                    textArea.select()
+
+                    val success = document.execCommand("copy")
                     document.body?.removeChild(textArea)
+
+                    showCopySuccess = success
+                } catch (e: Exception) {
+                    println("execCommand 실패: $e")
                 }
             }
         },
