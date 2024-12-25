@@ -10,16 +10,43 @@ import revoke.composeapp.generated.resources.ehls_1
 import revoke.composeapp.generated.resources.kimch_1
 import revoke.composeapp.generated.resources.sam_1
 
-data class Food(
-    val stringKey: StringKey,  // FoodKey 대신 StringKey 사용
-    val imageRes: DrawableResource,
-    var selectedOption: String = ""
-)
+// FoodType.kt
+enum class FoodType {
+    KIMCHI_STEW,
+    BIBIMBAP,
+    BULGOGI,
+    PORK_BELLY,
+    SOYBEAN_STEW;
 
-val foodList = listOf(
-    Food(StringKey.FOOD_KIMCHI_STEW, Res.drawable.kimch_1),
-    Food(StringKey.FOOD_BIBIMBAP, Res.drawable.bibim_1),
-    Food(StringKey.FOOD_BULGOGI, Res.drawable.bul_1),
-    Food(StringKey.FOOD_PORK_BELLY, Res.drawable.sam_1),
-    Food(StringKey.FOOD_SOYBEAN_STEW, Res.drawable.ehls_1)
-)
+    // 이미지 리소스와 매핑
+    val imageResource: DrawableResource
+        get() = when (this) {
+            KIMCHI_STEW -> Res.drawable.kimch_1
+            BIBIMBAP -> Res.drawable.bibim_1
+            BULGOGI -> Res.drawable.bul_1
+            PORK_BELLY -> Res.drawable.sam_1
+            SOYBEAN_STEW -> Res.drawable.ehls_1
+        }
+
+    // 번역 키와 매핑
+    val translationKey: StringKey
+        get() = when (this) {
+            KIMCHI_STEW -> StringKey.FOOD_KIMCHI_STEW
+            BIBIMBAP -> StringKey.FOOD_BIBIMBAP
+            BULGOGI -> StringKey.FOOD_BULGOGI
+            PORK_BELLY -> StringKey.FOOD_PORK_BELLY
+            SOYBEAN_STEW -> StringKey.FOOD_SOYBEAN_STEW
+        }
+}
+
+// Food.kt
+data class Food(
+    val type: FoodType,
+    var selectedOption: String = ""
+) {
+    val imageRes: DrawableResource get() = type.imageResource
+    val stringKey: StringKey get() = type.translationKey
+}
+
+// foodList 정의
+val foodList = FoodType.values().map { Food(it) }
