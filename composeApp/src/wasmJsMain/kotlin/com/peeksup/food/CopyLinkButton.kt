@@ -30,41 +30,39 @@ fun CopyLinkButton(responses: Map<String, String>) {
 
     Button(
         onClick = {
-            umami.track("copy")
             val shareUrl = URLUtils.encodeResponsesToURL(responses)
+            umami.track("copy")
 
             try {
-                // Clipboard API 시도
                 window.navigator.clipboard.writeText(shareUrl).then { _ ->
                     showCopySuccess = true
+                    umami.track("copy_modern_success")
                     Promise.resolve(null)
-                }
-            } catch (e: Exception) {
-                println("Clipboard API 실패: $e")
-
-                try {
-                    // 가장 기본적인 방식으로 시도
+                }.catch { error ->
                     val textArea = document.createElement("textarea") as HTMLTextAreaElement
                     textArea.value = shareUrl
-
-                    // 화면 밖으로 이동
-                    textArea.style.position = "absolute"
-                    textArea.style.left = "-9999px"
+                    textArea.setAttribute("readonly", "")
+                    textArea.style.position = "fixed"
+                    textArea.style.left = "0"
+                    textArea.style.top = "0"
+                    textArea.style.opacity = "0"
 
                     document.body?.appendChild(textArea)
                     textArea.focus()
                     textArea.select()
 
-                    val success = document.execCommand("copy")
-                    document.body?.removeChild(textArea)
+                    try {
+                        val success = document.execCommand("copy")
+                        showCopySuccess = success
+                        umami.track(if (success) "copy_fallback_success" else "copy_fallback_failed")
+                    } finally {
+                        document.body?.removeChild(textArea)
+                    }
 
-                    showCopySuccess = success
-                    umami.track("웹뷰 복사 실패 success?: $success")
-
-                } catch (e: Exception) {
-                    println("execCommand 실패: $e")
-                    umami.track("웹뷰 복사 실패 catch $e")
+                    Promise.resolve(null)  // catch 블록에서 Promise 반환
                 }
+            } catch (e: Exception) {
+                umami.track("copy_initial_failed")
             }
         },
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF4CAF50)),
