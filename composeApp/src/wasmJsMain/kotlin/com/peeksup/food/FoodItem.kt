@@ -19,18 +19,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.peeksup.util.CelebrityItem
 import com.peeksup.util.LanguageManager
+import com.peeksup.util.SurveyItem
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun FoodItem(modifier:Modifier, food: Food) {
+fun SurveyItem(modifier: Modifier, item: SurveyItem) {
     Column(
         modifier = modifier
             .fillMaxWidth()
     ) {
         Image(
-            painter = painterResource(food.imageRes),
-            contentDescription = LanguageManager.getString(food.stringKey),
+            painter = painterResource(item.imageRes),
+            contentDescription = LanguageManager.getString(item.stringKey),
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxSize()
@@ -40,7 +42,7 @@ fun FoodItem(modifier:Modifier, food: Food) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = LanguageManager.getString(food.stringKey),
+            text = LanguageManager.getString(item.stringKey),
             style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold),
             modifier = Modifier
                 .fillMaxWidth()

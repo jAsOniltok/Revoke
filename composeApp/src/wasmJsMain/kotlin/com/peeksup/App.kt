@@ -5,7 +5,8 @@ import androidx.compose.material.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.text.font.FontFamily
-import com.peeksup.food.FoodSurveyApp
+import com.peeksup.food.SurveyApp
+import com.peeksup.util.SurveyType
 import com.peeksup.util.umami
 import kotlinx.browser.window
 import org.jetbrains.compose.resources.Font
@@ -25,6 +26,6 @@ fun App() {
             FontFamily(font)
         )
     ) {
-        FoodSurveyApp()
+        SurveyApp(SurveyType.CELEBRITY)
     }
 }

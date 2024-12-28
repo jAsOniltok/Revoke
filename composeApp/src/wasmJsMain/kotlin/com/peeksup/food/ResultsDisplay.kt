@@ -15,21 +15,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.peeksup.util.LanguageManager
+import com.peeksup.util.SurveyItems
+import com.peeksup.util.SurveyType
 import com.peeksup.util.umami
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun ResultsDisplay(modifier: Modifier, results: Map<String, String>) {
+fun ResultsDisplay(surveyType: SurveyType, results: Map<String, String>, modifier: Modifier) {
+    // 응답별로 아이템 그룹화
     val groupedResults = results.entries.groupBy { it.value }
     umami.track("results", groupedResults.toString())
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(Color(0xFFF0F0F0), shape = RoundedCornerShape(12.dp))
             .padding(16.dp)
     ) {
-        groupedResults.forEach { (response, foods) ->
+        groupedResults.forEach { (response, items) ->
             Text(
                 text = response,
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
@@ -42,8 +45,8 @@ fun ResultsDisplay(modifier: Modifier, results: Map<String, String>) {
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                foods.forEach { (foodName, _) ->
-                    FoodResultItem(foodName = foodName)
+                items.forEach { (itemName, _) ->
+                    SurveyResultItem(surveyType, itemName)
                 }
             }
         }
@@ -51,11 +54,12 @@ fun ResultsDisplay(modifier: Modifier, results: Map<String, String>) {
 }
 
 @Composable
-fun FoodResultItem(foodName: String) {
-    // stringKey로 Food 찾기
-    val food = foodList.find { LanguageManager.getString(it.stringKey) == foodName }
+fun SurveyResultItem(surveyType: SurveyType, itemName: String) {
+    val item = SurveyItems.getItemsByType(surveyType).find {
+        LanguageManager.getString(it.stringKey) == itemName
+    }
 
-    if (food != null) {
+    if (item != null) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -64,8 +68,8 @@ fun FoodResultItem(foodName: String) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(food.imageRes),
-                contentDescription = LanguageManager.getString(food.stringKey),
+                painter = painterResource(item.imageRes),
+                contentDescription = LanguageManager.getString(item.stringKey),
                 modifier = Modifier
                     .size(80.dp)
                     .clip(RoundedCornerShape(8.dp))
@@ -74,7 +78,7 @@ fun FoodResultItem(foodName: String) {
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
-                text = LanguageManager.getString(food.stringKey),
+                text = LanguageManager.getString(item.stringKey),
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Medium),
                 modifier = Modifier.weight(1f)
             )

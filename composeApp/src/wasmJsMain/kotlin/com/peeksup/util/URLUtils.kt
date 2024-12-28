@@ -1,10 +1,6 @@
 package com.peeksup.util
 
-import com.peeksup.food.foodList
 import kotlinx.browser.window
-import org.w3c.dom.url.URLSearchParams
-import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 @JsName("encodeURIComponent")
 external fun encodeURIComponent(str: String): String
@@ -13,23 +9,25 @@ external fun encodeURIComponent(str: String): String
 external fun decodeURIComponent(str: String): String
 
 object URLUtils {
-    fun encodeResponsesToURL(responses: Map<String, String>): String {
+    fun encodeResponsesToURL(surveyType: SurveyType, responses: Map<String, String>): String {
         val baseUrl = window.location.origin + window.location.pathname
+        val items = SurveyItems.getItemsByType(surveyType)
 
-        // responses를 압축된 문자열로 변환
         val compressed = buildString {
-            responses.forEach { (foodName, response) ->
-                // 음식 이름을 인덱스로 변환 (2자리 hex)
-                val foodIndex = foodList.indexOfFirst {
-                    LanguageManager.getString(it.stringKey) == foodName
+            append(SurveyType.entries.indexOf(surveyType).toString(16))
+
+            responses.forEach { (itemName, response) ->
+                val itemIndex = items.indexOfFirst {
+                    LanguageManager.getString(it.stringKey) == itemName
                 }.toString(16).padStart(2, '0')
 
-                // 응답을 인덱스로 변환 (2자리 hex)
-                val responseIndex = ResponseKey.entries.indexOfFirst {
+                // ResponseKey.getByType 사용
+                val responseKeys = ResponseKey.getByType(surveyType)
+                val responseIndex = responseKeys.indexOfFirst {
                     LanguageManager.getResponseString(it) == response
                 }.toString(16).padStart(2, '0')
 
-                append(foodIndex)
+                append(itemIndex)
                 append(responseIndex)
             }
         }
@@ -37,29 +35,32 @@ object URLUtils {
         return "$baseUrl?d=$compressed"
     }
 
-    fun decodeURLToResponses(url: String): Map<String, String>? {
+    fun decodeURLToResponses(url: String): Pair<SurveyType, Map<String, String>>? {
         return try {
             val searchStr = window.location.search
             if (searchStr.isEmpty() || searchStr == "?") return null
 
-            // URL 파라미터에서 압축된 문자열 추출
             val compressed = searchStr.substringAfter("d=")
+            val surveyType = SurveyType.entries[compressed.substring(0, 1).toInt(16)]
+            val items = SurveyItems.getItemsByType(surveyType)
 
-            // 4자리씩 끊어서 Map으로 변환 (음식 2자리 + 응답 2자리)
-            compressed.chunked(4).associate { chunk ->
-                val foodIndex = chunk.substring(0, 2).toInt(16)
+            val responses = compressed.substring(1).chunked(4).associate { chunk ->
+                val itemIndex = chunk.substring(0, 2).toInt(16)
                 val responseIndex = chunk.substring(2, 4).toInt(16)
 
-                // 인덱스로 음식 이름 찾기
-                val foodKey = foodList[foodIndex].stringKey
-                val foodName = LanguageManager.getString(foodKey)
+                val itemKey = items[itemIndex].stringKey
+                val itemName = LanguageManager.getString(itemKey)
 
-                // 인덱스로 응답 찾기
-                val responseKey = ResponseKey.entries[responseIndex]
+                // ResponseKey.getByType 사용
+                val responseKeys = ResponseKey.getByType(surveyType)
+                val responseKey = responseKeys[responseIndex]
                 val response = LanguageManager.getResponseString(responseKey)
 
-                foodName to response
+                itemName to response
             }
+
+            surveyType to responses
+
         } catch (e: Exception) {
             null
         }

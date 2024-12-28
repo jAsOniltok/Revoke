@@ -25,6 +25,9 @@ object LanguageManager {
         return Strings.getResponseString(currentLang, key)
     }
 
+    // 현재 언어 가져오기
+    fun getCurrentLanguage(): Language = currentLang
+
     // 브라우저 언어로 초기화
     init {
         setLanguage(window.navigator.language)

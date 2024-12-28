@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.peeksup.util.LanguageManager
 import com.peeksup.util.StringKey
+import com.peeksup.util.SurveyType
 import com.peeksup.util.URLUtils
 import com.peeksup.util.umami
 import kotlinx.browser.document
@@ -25,12 +26,12 @@ import org.w3c.dom.HTMLTextAreaElement
 import kotlin.js.Promise
 
 @Composable
-fun CopyLinkButton(responses: Map<String, String>) {
+fun CopyLinkButton(surveyType: SurveyType,responses: Map<String, String>) {
     var showCopySuccess by remember { mutableStateOf(false) }
 
     Button(
         onClick = {
-            val shareUrl = URLUtils.encodeResponsesToURL(responses)
+            val shareUrl = URLUtils.encodeResponsesToURL(surveyType, responses)
             umami.track("copy")
 
             try {

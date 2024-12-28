@@ -28,8 +28,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.peeksup.util.LanguageManager
+import com.peeksup.util.FoodResponseKey
 import com.peeksup.util.ResponseKey
 import com.peeksup.util.StringKey
+import com.peeksup.util.SurveyItems
+import com.peeksup.util.SurveyType
 import com.peeksup.util.URLUtils
 import com.peeksup.util.isWasmGCSupported
 import com.peeksup.util.umami
@@ -37,11 +40,11 @@ import kotlinx.browser.window
 
 
 @Composable
-fun FoodSurveyApp() {
+fun SurveyApp(surveyType: SurveyType) {
     if(isWasmGCSupported().not()){
         BrowserCompatibilityWarning()
     } else {
-        val urlResponses = remember {
+        val urlDecodedResult = remember {
             try {
                 URLUtils.decodeURLToResponses("").also {
                     println("URL Responses: $it")
@@ -51,18 +54,23 @@ fun FoodSurveyApp() {
                 null
             }
         }
+
+        // URL에서 타입과 응답을 분리
+        val (decodedType, urlResponses) = urlDecodedResult ?: (surveyType to emptyMap())
+
         val responseOptions = remember {
-            ResponseKey.entries.map { key ->
+            ResponseKey.getByType(surveyType).map { key ->
                 LanguageManager.getResponseString(key)
             }
         }
 
-        var currentFoodIndex by rememberSaveable { mutableStateOf(0) }
-        var responses by rememberSaveable { mutableStateOf(urlResponses ?: emptyMap()) }
-        var showResults by rememberSaveable { mutableStateOf(urlResponses != null) }
+        var currentIndex by rememberSaveable { mutableStateOf(0) }
+        var responses by rememberSaveable { mutableStateOf(urlResponses) }
+        var showResults by rememberSaveable { mutableStateOf(urlResponses.isNotEmpty()) }
+
+        val items = SurveyItems.getItemsByType(surveyType)
 
         Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-            println("showResults: $showResults")
             if (!showResults) {
                 Column(
                     verticalArrangement = Arrangement.Center,
@@ -70,17 +78,9 @@ fun FoodSurveyApp() {
                         .fillMaxSize()
                         .padding(bottom = 80.dp)
                 ) {
-                    /*     Text(
-                             text = LanguageManager.getString(StringKey.TITLE),
-                             style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Bold),
-                             modifier = Modifier
-                                 .padding(bottom = 16.dp)
-                                 .align(Alignment.CenterHorizontally)
-                         )*/
-
-                    FoodItem(
+                    SurveyItem(
                         modifier = Modifier.weight(1f, false),
-                        food = foodList[currentFoodIndex],
+                        item = items[currentIndex]
                     )
 
                     Column(
@@ -89,12 +89,11 @@ fun FoodSurveyApp() {
                         ResponseOptions(
                             options = responseOptions,
                             onOptionSelected = { selectedOption ->
-                                val foodName =
-                                    LanguageManager.getString(foodList[currentFoodIndex].stringKey)
-                                umami.track("${foodName to selectedOption}")
-                                responses = responses + (foodName to selectedOption)
-                                if (currentFoodIndex < foodList.size - 1) {
-                                    currentFoodIndex += 1
+                                val itemName = LanguageManager.getString(items[currentIndex].stringKey)
+                                umami.track("${itemName to selectedOption}")
+                                responses = responses + (itemName to selectedOption)
+                                if (currentIndex < items.size - 1) {
+                                    currentIndex += 1
                                 } else {
                                     showResults = true
                                 }
@@ -111,7 +110,7 @@ fun FoodSurveyApp() {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 140.dp)  // 하단 버튼을 위한 여유 공간
+                            .padding(bottom = 140.dp)
                     ) {
                         Text(
                             text = LanguageManager.getString(StringKey.RESULT),
@@ -121,12 +120,12 @@ fun FoodSurveyApp() {
                                 .align(Alignment.CenterHorizontally)
                         )
                         ResultsDisplay(
+                            surveyType = surveyType,
                             results = responses,
                             modifier = Modifier
                         )
                     }
 
-                    // 하단 고정 버튼
                     Column(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
@@ -134,13 +133,13 @@ fun FoodSurveyApp() {
                             .background(Color.White)
                             .padding(bottom = 16.dp)
                     ) {
-                        CopyLinkButton(responses = responses)
+                        CopyLinkButton(surveyType = surveyType, responses = responses)
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(
                             onClick = {
                                 umami.track("retry")
                                 responses = emptyMap()
-                                currentFoodIndex = 0
+                                currentIndex = 0
                                 showResults = false
                                 window.history.replaceState(null, "", window.location.pathname)
                             },
@@ -159,4 +158,3 @@ fun FoodSurveyApp() {
         }
     }
 }
-
