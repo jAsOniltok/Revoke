@@ -14,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.peeksup.util.LanguageManager
+import com.peeksup.util.StringKey
 import com.peeksup.util.umami
 
 @Composable
@@ -27,17 +29,18 @@ fun BrowserCompatibilityWarning() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            "최신 브라우저가 필요합니다",
+            text = LanguageManager.getString(StringKey.BROWSER_WARNING_TITLE),
+            style = MaterialTheme.typography.h6,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = LanguageManager.getString(StringKey.BROWSER_SUPPORTED_TITLE),
             style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            "다음 브라우저에서 접속해주세요:\n\n" +
-                    "• Chrome 또는 크로미움 기반 브라우저 119+\n" +
-                    "• Firefox 120+\n\n" +
-                    "모바일에서도 위 버전의 브라우저로\n" +
-                    "접속 가능합니다",
+            text = LanguageManager.getString(StringKey.BROWSER_SUPPORTED_LIST),
             style = MaterialTheme.typography.body1,
             textAlign = TextAlign.Center
         )
