@@ -30,18 +30,15 @@ fun BrowserCompatibilityWarning() {
     ) {
         Text(
             text = LanguageManager.getString(StringKey.BROWSER_WARNING_TITLE),
-            style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Center
         )
         Text(
             text = LanguageManager.getString(StringKey.BROWSER_SUPPORTED_TITLE),
-            style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = LanguageManager.getString(StringKey.BROWSER_SUPPORTED_LIST),
-            style = MaterialTheme.typography.body1,
             textAlign = TextAlign.Center
         )
     }
